@@ -6,19 +6,26 @@ import SaveForm from "./pages/post/SaveForm";
 import UpdateForm from "./pages/post/UpdateForm";
 import JoinForm from "./pages/user/JoinForm";
 import LoginForm from "./pages/user/LoginForm";
+import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const isLogin = useSelector((state) => state.isLogin)
+
   return (
     <div>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/saveForm" element={<SaveForm />} />
-        <Route path="/post/:id" element={<Detail />} />
-        <Route path="/loginForm" element={<LoginForm />} />
-        <Route path="/joinForm" element={<JoinForm />} />
-        <Route path="/updateForm/:id" element={<UpdateForm />} />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/saveForm" element={<SaveForm />} />
+          <Route path="/post/:id" element={<Detail />} />
+          <Route path="/loginForm" element={<LoginForm />} />
+          <Route path="/joinForm" element={<JoinForm />} />
+          <Route path="/updateForm/:id" element={<UpdateForm />} />
+          </Routes>
+      </Container>
     </div>
   );
 }
