@@ -2,16 +2,16 @@ package shop.mtcoding.blog._core.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
 public class CorsFilter implements Filter {
 
-    @Value("${allow.host}")
     private String host;
+
+    public CorsFilter(String host) {
+        this.host = host;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
