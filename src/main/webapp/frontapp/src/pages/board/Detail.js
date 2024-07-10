@@ -4,9 +4,9 @@ import { Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 const Detail = (props) => {
-  const { id } = useParams();
+  const { boardId } = useParams();
 
-  const [post, setPost] = useState({
+  const [board, setBoard] = useState({
     id: undefined,
     title: "",
     content: "",
@@ -17,35 +17,34 @@ const Detail = (props) => {
   });
 
   useEffect(() => {
-    console.log("postId", id);
-    fetchDetail(id);
+    fetchDetail(boardId);
   }, []);
 
-  async function fetchDetail(postId) {
+  async function fetchDetail(boardId) {
     let response = await axios({
-      url: `http://localhost:8080/api/boards/${postId}/detail`,
+      url: `http://localhost:8080/api/boards/${boardId}/detail`,
     });
     let responseBody = response.data;
 
-    setPost(responseBody.body);
+    setBoard(responseBody.body);
   }
 
-  function fetchDelete(postId) {}
+  function fetchDelete(boardId) {}
 
   return (
     <div>
-      <Link to={"/updateForm/1"} className="btn btn-warning">
+      <Link to={`/updateForm/${board.id}`} className="btn btn-warning">
         수정
       </Link>
-      <Button className="btn btn-danger" onClick={() => fetchDelete(post.id)}>
+      <Button className="btn btn-danger" onClick={() => fetchDelete(board.id)}>
         삭제
       </Button>
 
       <br />
       <br />
-      <h1>{post.title}</h1>
+      <h1>{board.title}</h1>
       <hr />
-      <div>{post.content}</div>
+      <div>{board.content}</div>
     </div>
   );
 };

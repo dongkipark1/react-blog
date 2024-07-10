@@ -3,6 +3,10 @@ package shop.mtcoding.blog.board;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -22,6 +26,13 @@ public class BoardController {
     private final HttpSession session;
 
     @GetMapping("/")
+    public ResponseEntity<?> mainV2(@PageableDefault(size=3, sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+        BoardResponse.MainV2DTO respDTO = boardService.글목록조회V2(pageable);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
+    }
+
+
+    @GetMapping("/v1")
     public ResponseEntity<?> main(){
         List<BoardResponse.MainDTO> respDTO = boardService.글목록조회();
         return ResponseEntity.ok(new ApiUtil(respDTO));
