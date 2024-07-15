@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
-import shop.mtcoding.blog.reply.Reply;
 import shop.mtcoding.blog.reply.ReplyJPARepository;
 import shop.mtcoding.blog.user.SessionUser;
 import shop.mtcoding.blog.user.User;
 import shop.mtcoding.blog.user.UserJPARepository;
-import shop.mtcoding.blog.user.UserService;
 
 import java.util.List;
 
@@ -80,7 +78,7 @@ public class BoardService {
         return boardList.stream().map(board -> new BoardResponse.MainDTO(board)).toList();
     }
 
-    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
+    public BoardResponse.DetailDTO 글상세보기(int boardId, SessionUser sessionUser) {
         Board board = boardJPARepository.findByIdJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 

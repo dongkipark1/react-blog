@@ -3,7 +3,7 @@ package shop.mtcoding.blog.board;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import shop.mtcoding.blog.reply.Reply;
-import shop.mtcoding.blog.user.User;
+import shop.mtcoding.blog.user.SessionUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class BoardResponse {
         private boolean isOwner;
         private List<ReplyDTO> replies = new ArrayList<>();
 
-        public DetailDTO(Board board, User sessionUser) {
+        public DetailDTO(Board board, SessionUser sessionUser) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
@@ -56,7 +56,7 @@ public class BoardResponse {
             private String username; // 댓글 작성자 이름
             private boolean isOwner;
 
-            public ReplyDTO(Reply reply, User sessionUser) {
+            public ReplyDTO(Reply reply, SessionUser sessionUser) {
                 this.id = reply.getId(); // lazy loading 발동
                 this.comment = reply.getComment();
                 this.userId = reply.getUser().getId();

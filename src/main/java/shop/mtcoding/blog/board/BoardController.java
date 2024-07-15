@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.errors.exception.Exception400;
+import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.utils.ApiUtil;
+import shop.mtcoding.blog._core.utils.JwtUtil;
 import shop.mtcoding.blog.user.SessionUser;
 import shop.mtcoding.blog.user.User;
 
@@ -38,10 +41,23 @@ public class BoardController {
         return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
+    // 인증 필요 없음
     @GetMapping("/api/boards/{id}/detail")
-    public ResponseEntity<?> detail(@PathVariable Integer id){
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        BoardResponse.DetailDTO respDTO = boardService.글상세보기(id, sessionUser);
+    public ResponseEntity<?> detail(@PathVariable Integer id, HttpServletRequest request){
+
+        String jwt = request.getHeader("Authorization");
+
+        BoardResponse.DetailDTO respDTO = null;
+
+        try {
+            if(!jwt.isEmpty()){
+                jwt = jwt.replace("Bearer ", "");
+                SessionUser sessionUser = JwtUtil.verify(jwt);
+                respDTO = boardService.글상세보기(id, sessionUser);
+            }
+        }catch (Exception e){
+            throw new Exception401("토큰 검증 실패");
+        }
         return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
@@ -73,4 +89,6 @@ public class BoardController {
         boardService.글삭제(id, sessionUser.getId());
         return ResponseEntity.ok(new ApiUtil(null));
     }
+
+
 }

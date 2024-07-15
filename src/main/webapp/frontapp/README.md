@@ -60,3 +60,22 @@ root.render(
   <Route path="/loginComplete" element={<LoginComplete />} />
 </Routes>
 ```
+
+## 새로운 문법
+
+```js
+// Link로 props로 보내고 싶을때 (params 쓰지 않고)
+<Link
+  to={`/updateForm/${board.id}`}
+  className="btn btn-warning"
+  state={{ title: board.title, content: board.content }}
+>
+  수정
+</Link>
+```
+
+```js
+// 받을때
+const location = useLocation();
+const { title, content } = location.state;
+```

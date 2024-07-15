@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link,useNavigate, useParams } from "react-router-dom";
 
 const Detail = (props) => {
   const { boardId } = useParams();
+  const jwt = useSelector((state) => state.jwt);
+  const navigate = useNavigate(); 
 
   const [board, setBoard] = useState({
     id: undefined,
@@ -29,7 +32,22 @@ const Detail = (props) => {
     setBoard(responseBody.body);
   }
 
-  function fetchDelete(boardId) {}
+  async function fetchDelete(boardId) {
+    try {
+      await axios({
+        url: `http://localhost:8080/api/boards/${boardId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: jwt,
+        },
+      });
+      navigate("/");
+    } catch (error) {
+      // 200이 안떨어지면 catch로 온다.
+      console.log(error);
+      alert(error.response.data.msg);
+    }
+  }
 
   return (
     <div>
